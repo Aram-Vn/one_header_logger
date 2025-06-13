@@ -73,24 +73,65 @@ inline std::mutex log_mutex;
 
 #if LOG_LEVEL_DEBUG >= LOG_LEVEL_THRESHOLD
 #define log_debug(...) log(LOG_LEVEL_DEBUG, __VA_ARGS__)
+#define log_once_debug(...)                                                                                            \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        static bool _once = false;                                                                                     \
+        if (!_once)                                                                                                    \
+        {                                                                                                              \
+            _once = true;                                                                                              \
+            log(LOG_LEVEL_DEBUG, __VA_ARGS__);                                                                         \
+        }                                                                                                              \
+    } while (0)
 #else
 #define log_debug(...) (void)0
 #endif
 
 #if LOG_LEVEL_INFO >= LOG_LEVEL_THRESHOLD
 #define log_info(...) log(LOG_LEVEL_INFO, __VA_ARGS__)
+#define log_once_info(...)                                                                                             \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        static bool _once = false;                                                                                     \
+        if (!_once)                                                                                                    \
+        {                                                                                                              \
+            _once = true;                                                                                              \
+            log(LOG_LEVEL_INFO, __VA_ARGS__);                                                                          \
+        }                                                                                                              \
+    } while (0)
 #else
-#define log_info(...) (void)0
+#define log_info(...)      (void)0
+#define log_once_info(...) (void)0
 #endif
 
 #if LOG_LEVEL_WARN >= LOG_LEVEL_THRESHOLD
 #define log_warn(...) log(LOG_LEVEL_WARN, __VA_ARGS__)
+#define log_once_warn(...)                                                                                             \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        static bool _once = false;                                                                                     \
+        if (!_once)                                                                                                    \
+        {                                                                                                              \
+            _once = true;                                                                                              \
+            log(LOG_LEVEL_WARN, __VA_ARGS__);                                                                          \
+        }                                                                                                              \
+    } while (0)
 #else
 #define log_warn(...) (void)0
 #endif
 
 #if LOG_LEVEL_ERROR >= LOG_LEVEL_THRESHOLD
 #define log_error(...) log(LOG_LEVEL_ERROR, __VA_ARGS__)
+#define log_once_error(...)                                                                                            \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        static bool _once = false;                                                                                     \
+        if (!_once)                                                                                                    \
+        {                                                                                                              \
+            _once = true;                                                                                              \
+            log(LOG_LEVEL_ERROR, __VA_ARGS__);                                                                         \
+        }                                                                                                              \
+    } while (0)
 #else
 #define log_error(...) (void)0
 #endif
