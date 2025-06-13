@@ -1,5 +1,7 @@
 #pragma once
 
+#undef log
+
 #define LOG_LEVEL_DEBUG 0
 #define LOG_LEVEL_INFO  1
 #define LOG_LEVEL_WARN  2
@@ -10,14 +12,31 @@
 #define LOG_LEVEL_THRESHOLD 0
 #endif
 
+#ifdef _WIN32
+#include <windows.h>
+
+static auto _ = []
+{
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE)
+        return 0;
+
+    DWORD dwMode = 0;
+    if (!GetConsoleMode(hOut, &dwMode))
+        return 0;
+
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+    return 0;
+}();
+#endif
+
 #define COLOR(x) x
 #define RED      COLOR("\033[1;31m")
 #define YELLOW   COLOR("\033[1;33m")
 #define GREEN    COLOR("\033[1;32m")
 #define BLUE     COLOR("\033[1;34m")
 #define RESET    COLOR("\033[0m")
-
-#undef log
 
 #ifdef ENABLE_LOG_MUTEX
 #include <mutex>
