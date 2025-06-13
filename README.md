@@ -121,7 +121,7 @@ Explanation of Options
 
 ---
 
-## configuration
+## configuration (manual)
 
 ### Set Log Level Threshold
 
@@ -215,12 +215,14 @@ Use `log_once_*` macros to emit a log message **only once** per call site, even 
 ### Example
 
 ```cpp
-for (int i = 0; i < 10; ++i) {
-    log_once_info("log_once_info\n");
-    log_once_debug("log_once_debug\n");
-    log_once_warn("log_once_warn\n");
-    log_once_error("log_once_error\n");
-}
+    for (int i = 0; i < 5; ++i)
+    {
+        log_info("log_info: %i\n", i);
+        log_once_info("log_once_info\n");
+        log_once_debug("log_once_debug\n");
+        log_once_warn("log_once_warn\n");
+        log_once_error("log_once_error\n");
+    }
 ```
 
 ```sh
