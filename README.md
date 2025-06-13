@@ -92,3 +92,6 @@ int main() {
     log_error("File not found: %s\n", "config.json");
 }
 ```
+
+output
+![Image](https://github.com/user-attachments/assets/19e5f7ff-549b-40b9-a18b-66ccaf7c849d)
