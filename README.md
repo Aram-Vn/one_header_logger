@@ -17,6 +17,8 @@ A simple, header-only logging utility for C++ with:
 - [Project Structure](#project-structure)s
 - [Log Levels](#log-levels)
 - [CMake Integration](#cmake-integration)
+  -[Defaults](#defaults-if-left-undefined)
+  -[Log Level Threshold Effects](#log-level-threshold-effects)
 - [Configuration](#configuration)
   - [Set Log Level Threshold](#set-log-level-threshold)
   - [Enable Thread-Safe Logging](#enable-thread-safe-logging)
@@ -89,17 +91,26 @@ Explanation of Options
 
 - **LOG_LEVEL_THRESHOLD:** Filters out all logs below the specified level. This is a compile-time optimization — excluded log calls are completely stripped from the binary using preprocessor conditions.
 
-  - **Optional:** If not defined, it defaults to LOG_LEVEL_DEBUG (i.e. all logs are enabled).
+  - **Optional:** If not defined, it defaults to `LOG_LEVEL_DEBUG` (i.e. all logs are enabled).
 
-  - **Usage Tip:** You can leave it undefined during development for full verbosity, and define it as LOG_LEVEL_WARN or LOG_LEVEL_ERROR for production builds.
+  - **Usage Tip:** You can leave it undefined during development for full verbosity, and define it as `LOG_LEVEL_WARN` or `LOG_LEVEL_ERROR` for production builds.
 
-- **ENABLE_LOG_MUTEX:** Enables internal use of a global std::mutex to prevent interleaved log output in multi-threaded applications.
+- **ENABLE_LOG_MUTEX:** Enables internal use of a global `std::mutex` to prevent **interleaved log output** in multi-threaded applications.
 
-  - **Optional:** If not defined, logging is not synchronized, which is fine for single-threaded or performance-critical caseswhere you control log order.
+  - **Optional:** If not defined, logging is not synchronized, which is fine for single-threaded or performance-critical cases where you control log order.
 
   - **Use this if:** Your application logs from multiple threads and you want cleaner terminal output.
 
+### Defaults (if left undefined)
+
+| Option                | Default           | Effect                                                   |
+| --------------------- | ----------------- | -------------------------------------------------------- |
+| `LOG_LEVEL_THRESHOLD` | `LOG_LEVEL_DEBUG` | All logs are compiled in (no filtering)                  |
+| `ENABLE_LOG_MUTEX`    | *not enabled*     | No locking; output may interleave in multi-threaded code |
+
 ---
+
+### Log Level Threshold Effects
 
 | Macro Value           | Logs Included                    |
 | --------------------- | -------------------------------- |
