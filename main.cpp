@@ -1,6 +1,3 @@
-#define ENABLE_LOG_MUTEX
-// #define LOG_LEVEL_THRESHOLD LOG_LEVEL_WARN
-
 #include "logger.hpp"
 
 #include <string>
