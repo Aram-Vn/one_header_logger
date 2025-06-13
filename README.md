@@ -14,11 +14,11 @@ A simple, header-only logging utility for C++ with:
 
 ## Table of Contents
 
-- [Project Structure](#project-structure)s
+- [Project Structure](#project-structure)
 - [Log Levels](#log-levels)
 - [CMake Integration](#cmake-integration)
-  -[Defaults](#defaults-if-left-undefined)
-  -[Log Level Threshold Effects](#log-level-threshold-effects)
+  - [Defaults](#defaults-if-left-undefined)
+  - [Log Level Threshold Effects](#log-level-threshold-effects)
 - [Configuration](#configuration)
   - [Set Log Level Threshold](#set-log-level-threshold)
   - [Enable Thread-Safe Logging](#enable-thread-safe-logging)
