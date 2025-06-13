@@ -225,11 +225,8 @@ Use `log_once_*` macros to emit a log message **only once** per call site, even 
     }
 ```
 
-```sh
-[INFO] log_once_info
-[DEBUG] log_once_debug
-[WARN] main.cpp:XX main(): log_once_warn
-[ERROR] main.cpp:XX main(): log_once_error
-```
+output will be
+
+![Image](https://github.com/user-attachments/assets/eb4fc3ad-e6b0-46a5-908a-751a2e6c5522)
 
 Each message prints only once, even though the loop runs multiple times.
