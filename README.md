@@ -5,6 +5,7 @@ A simple, header-only logging utility for C++ with:
 - ANSI-colored log levels (`DEBUG`, `INFO`, `WARN`, `ERROR`)
 - Optional thread safety with `std::mutex`
 - Compile-time log filtering (based on `LOG_LEVEL_THRESHOLD`)
+- Simple to integrate (drop in or via CMake)
 - log_once_* macros for one-time log messages
 - GNU-style variadic macros with fallback for standard C++
 - Zero runtime cost for disabled log levels
@@ -13,7 +14,9 @@ A simple, header-only logging utility for C++ with:
 
 ## Table of Contents
 
+- [Project Structure](#project-structure)s
 - [Log Levels](#log-levels)
+- [CMake Integration](#cmake-integration)
 - [Configuration](#configuration)
   - [Set Log Level Threshold](#set-log-level-threshold)
   - [Enable Thread-Safe Logging](#enable-thread-safe-logging)
@@ -21,6 +24,18 @@ A simple, header-only logging utility for C++ with:
 - [One-Time Logging Example](#one-time-logging)
 
 ---
+
+## Project Structure
+
+```sh
+one_header_logger/
+├── logger.hpp            # The only header you need
+├── CMakeLists.txt        # Minimal CMake interface library
+└── test/
+    ├── CMakeLists.txt    # Optional setup for test and as example
+    └── main.cpp          # Example usage
+
+```
 
 ## Log Levels
 
@@ -33,7 +48,69 @@ A simple, header-only logging utility for C++ with:
 
 ---
 
-## Configuration
+## CMake Integration
+
+>
+> [!CAUTION]
+>
+> Minimum Required Version
+>
+
+```cmake
+cmake_minimum_required(VERSION 3.14)
+```
+
+Add to Your Project
+
+Clone or add as a submodule
+
+```sh
+git submodule add https://github.com/yourname/one_header_logger.git
+
+```
+
+Then, in your `CMakeLists.txt:`
+To use the logger in your project, add the library using `add_subdirectory` and configure it with optional compile-time definitions:
+
+```cmake
+add_subdirectory(one_header_logger)
+
+add_executable(my_app main.cpp)
+target_link_libraries(my_app PRIVATE one_header_logger)
+
+target_compile_definitions(my_app PRIVATE
+    LOG_LEVEL_THRESHOLD=LOG_LEVEL_INFO  # Filter out lower-priority logs at compile time
+    ENABLE_LOG_MUTEX                    # Make logging thread-safe using std::mutex
+)
+
+```
+
+Explanation of Options
+
+- **LOG_LEVEL_THRESHOLD:** Filters out all logs below the specified level. This is a compile-time optimization — excluded log calls are completely stripped from the binary using preprocessor conditions.
+
+  - **Optional:** If not defined, it defaults to LOG_LEVEL_DEBUG (i.e. all logs are enabled).
+
+  - **Usage Tip:** You can leave it undefined during development for full verbosity, and define it as LOG_LEVEL_WARN or LOG_LEVEL_ERROR for production builds.
+
+- **ENABLE_LOG_MUTEX:** Enables internal use of a global std::mutex to prevent interleaved log output in multi-threaded applications.
+
+  - **Optional:** If not defined, logging is not synchronized, which is fine for single-threaded or performance-critical caseswhere you control log order.
+
+  - **Use this if:** Your application logs from multiple threads and you want cleaner terminal output.
+
+---
+
+| Macro Value           | Logs Included                    |
+| --------------------- | -------------------------------- |
+| `LOG_LEVEL_DEBUG` (0) | `DEBUG`, `INFO`, `WARN`, `ERROR` |
+| `LOG_LEVEL_INFO`  (1) | `INFO`, `WARN`, `ERROR`          |
+| `LOG_LEVEL_WARN`  (2) | `WARN`, `ERROR`                  |
+| `LOG_LEVEL_ERROR` (3) | `ERROR` only                     |
+
+---
+
+## configuration
 
 ### Set Log Level Threshold
 
